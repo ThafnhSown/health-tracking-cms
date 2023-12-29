@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCurrentUser } from './store/features/userSlice';
 import NotFound from './page/NotFound';
 import News from './page/News';
+import ListUser from './page/ListUser';
 
 
 function App() {
@@ -22,7 +23,6 @@ function App() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.value);
   // const user = "asasa";
-  console.log(user);
 
   useEffect(() => {
     dispatch(getCurrentUser());
@@ -53,6 +53,20 @@ function App() {
                   element={
                     < Notes />
                   }
+                />      
+                
+                <Route
+                path="/news"
+                element={
+                  < News />
+                }
+                />
+
+                <Route
+                path="/user"
+                element={
+                  < ListUser />
+                }
                 />
 
               </Route>
@@ -60,7 +74,6 @@ function App() {
               <Route path="/signup" element={<Signup />} />
               <Route path="/" element={<Login />} />
               <Route path="*" element={< NotFound />} />
-              <Route path="/news" element={<News />} />
             </Routes>
           </div>
         </section>

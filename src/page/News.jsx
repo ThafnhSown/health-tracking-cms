@@ -6,9 +6,10 @@ import { db, auth } from '../firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import { NavLink } from 'react-router-dom';
 import moment from 'moment/moment';
-import { Table } from 'antd'
+import { Button, Table } from 'antd'
+import CreateModal from '../components/elements/Modal';
 const News = () => {
-
+  const [news, setNews] = useState({})
   const [openSearchNotes, setOpenSearchNotes] = useState(false);
   const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
@@ -16,37 +17,8 @@ const News = () => {
   const [user, setUser] = useState("");
   const [data, setData] = useState([]);
 
-  const handleOpenSearchTab = () => {
-    setOpenSearchNotes(prevState => !prevState);
-  }
+  const [modal, setModal] = useState(false)
 
-  const handleAddNotesToDb = async () => {
-    if (notes.trim() === "") {
-      setError("Notes cannot be empty.");
-      return;
-    }
-
-
-    setLoading(true);
-
-    try {
-      const docRef = await addDoc(collection(db, "notes"), {
-        notes: notes,
-        uid: user,
-        dateCreated: moment().format("MMM Do YY")
-      });
-
-      setLoading(false);
-      setNotes("");
-
-     
-
-    } catch (error) {
-      console.error("Error adding document:", error);
-      setError("Error adding the note.");
-    }
-
-  }
 
   const fetchData = async () => {
     try {
@@ -57,7 +29,7 @@ const News = () => {
         setLoading(false);
         fetchedData.push({ id: doc.id, ...doc.data() });
       });
-      console.log("abc", fetchedData)
+  
       setData(fetchedData);
     } catch (error) {
       console.error("Error fetching documents:", error);
@@ -79,17 +51,28 @@ const News = () => {
 
   useEffect(() => {
     fetchData();
-  }, [user, notes])
+  })
 
 
   return (
    <>
+   {modal && <CreateModal news={news} modal={modal} setModal={setModal} />}
     <Table 
         dataSource={data}
     >
-        <Table.Column tilte="Tiêu đề" dataIndex="title" />
-        <Table.Column tilte="Nội dung" dataIndex="content" />
-        <Table.Column tilte="Thumbnail" dataIndex="image" />
+        <Table.Column title="Tiêu đề" dataIndex="title" />
+        <Table.Column title="Nội dung" dataIndex="content" />
+        <Table.Column title="Thumbnail" dataIndex="image" render={(_, item) => (
+          <img src={item.image}/>
+        )} />
+        <Table.Column title="Trạng thái" dataIndex="status" />
+        <Table.Column title="Chỉnh sửa" render={(_, item) => (
+          <Button onClick={() => {
+            setNews(item)
+            setModal(true)
+          }}>Sửa</Button>
+        )}
+        />
     </Table>
    </>
   )

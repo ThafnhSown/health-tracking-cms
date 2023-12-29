@@ -44,11 +44,8 @@ const Home = () => {
 
     return (
         <section className="text-white pt-10 pb-24 px-3  md:pt-10 md:pb-20">
-
             <section className="grid grid-cols-1 space-y-6 md:space-y-0 md:gap-4">
                 <Pomodoro />
-
-                {/* notes */}
                 <Card className="py-4 col-span-2">
                     <div className="flex justify-between">
                         <Text className="text-lg font-semibold mb-10">
