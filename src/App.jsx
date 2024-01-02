@@ -16,6 +16,7 @@ import { getCurrentUser } from './store/features/userSlice';
 import NotFound from './page/NotFound';
 import News from './page/News';
 import ListUser from './page/ListUser';
+import Food from './page/Food';
 
 
 function App() {
@@ -59,6 +60,13 @@ function App() {
                 path="/news"
                 element={
                   < News />
+                }
+                />
+
+                <Route
+                path="/food"
+                element={
+                  < Food />
                 }
                 />
 
