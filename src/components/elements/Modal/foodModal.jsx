@@ -25,16 +25,7 @@ const FoodModal = (props) => {
       console.log(err);
     }
   };
-  const handleDelete = async (itemId) => {
-    try {
-      const foodDocRef = doc(db, "food", itemId);
-      await deleteDoc(foodDocRef);
-      console.log("Document successfully deleted!");
-      setModal(false);
-    } catch (error) {
-      console.error("Error deleting document: ", error);
-    }
-  };
+
   return (
     <>
       <Modal
@@ -44,8 +35,6 @@ const FoodModal = (props) => {
         onCancel={handleCancel}
         onOk={handleChange}
         title="Chỉnh sửa thông tin thực phẩm"
-        okText="Lưu"
-        cancelText="Hủy"
       >
         <Form form={form}>
           <Form.Item label="Tên" name="name">

@@ -1,7 +1,7 @@
 import {Modal, Form, Input, Select} from 'antd'
 import { useEffect } from 'react'
 import {options} from '../../../utils/ModalConst'
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, addDoc, collection } from "firebase/firestore";
 import {db} from "../../../firebase"
 import TextArea from 'antd/es/input/TextArea';
 
@@ -9,9 +9,9 @@ const AddFoodModal = (props) => {
     const {food, modal, setModal} = props
     const [form] = Form.useForm()
     useEffect(() => {
-        form.setFieldsValue({
-            ...food
-        })
+        // form.setFieldsValue({
+        //     ...food
+        // })
     }, [])
     const handleCancel = () => {
         setModal(false)
@@ -19,6 +19,7 @@ const AddFoodModal = (props) => {
     const handleAdd = async () => {
          try {
             // Add a new document to the "food" collection
+            console.log("starting add")
             const newFoodDocRef = await addDoc(collection(db, "food"), form.getFieldsValue());
             console.log("Document added with ID: ", newFoodDocRef.id);
             setModal(false);
@@ -36,7 +37,7 @@ const AddFoodModal = (props) => {
             title="Chỉnh sửa thông tin thực phẩm"
             okText="Lưu"
             cancelText="Hủy"
-            onOk={handleChange}
+            onOk={handleAdd}
             >
                 <Form
                 form={form}

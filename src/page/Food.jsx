@@ -8,6 +8,9 @@ import { NavLink } from 'react-router-dom';
 import moment from 'moment/moment';
 import { Button, Table } from 'antd'
 import FoodModal from '../components/elements/Modal/foodModal';
+import AddFoodModal from '../components/elements/Modal/addFood';
+import DeleteFoodModal from '../components/elements/Modal/deleteFood';
+
 const Food = () => {
   const [food, setFood] = useState({})
   const [openSearchNotes, setOpenSearchNotes] = useState(false);
@@ -17,6 +20,8 @@ const Food = () => {
   const [data, setData] = useState([]);
 
   const [modal, setModal] = useState(false)
+  const [deleteModal, setDeleteModal] = useState(false)
+  const [addModal, setAddModal] = useState(false)
 
 
   const fetchData = async () => {
@@ -56,6 +61,10 @@ const Food = () => {
   return (
    <>
    {modal && <FoodModal food={food} modal={modal} setModal={setModal} />}
+   {deleteModal && <DeleteFoodModal food={food} modal={deleteModal} setModal={setDeleteModal}  />}
+   {addModal && <AddFoodModal food={food} modal={addModal} setModal={setAddModal}  />}
+
+
     <Table 
         dataSource={data}
     >
@@ -65,7 +74,6 @@ const Food = () => {
         <Table.Column title="Tinh bột" dataIndex="carbohydrates" />
         <Table.Column title="Đạm" dataIndex="protein" />
         <Table.Column title="Chất béo" dataIndex="fat" />
-        
         <Table.Column title="Chỉnh sửa" render={(_, item) => (
           <Button onClick={() => {
             setFood(item)
@@ -73,7 +81,22 @@ const Food = () => {
           }}>Sửa</Button>
         )}
         />
+        <Table.Column title="Xoá" render={(_, item) => (
+          <Button onClick={() => {
+            console.log('Xoa')
+            console.log(food.id)
+            setFood(item)
+            setDeleteModal(true)
+          }}>Xoá</Button>
+        )}
+        />
     </Table>
+    <Button type='primary' size='middle' onClick={() => {
+      setAddModal(true)
+      console.log('add')
+    }}>
+      Add
+    </Button >
    </>
   )
 }
